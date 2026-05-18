@@ -14,7 +14,13 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE SET NULL
 );
-
+INSERT INTO users (username, email, password_hash, role)
+VALUES (
+    'admin',
+    'admin@example.com',
+    'scrypt:32768:8:1$TzmaNX77hvmreQBh$7cb3bef6b6708a480623f395afcb7d97ab5a65ffd9aa9790a6136ec7244a03f0806a744e8df255b0a96e1d153ca664647b4cee34fe9d8a656541c3b362dee006',
+    'admin'
+);
 CREATE TABLE IF NOT EXISTS categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
