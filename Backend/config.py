@@ -30,6 +30,11 @@ class Config:
     MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD") or os.getenv("MYSQLPASSWORD")
     MYSQL_DATABASE = os.getenv("MYSQL_DATABASE") or os.getenv("MYSQLDATABASE")
 
+    print("MYSQL_HOST =", MYSQL_HOST)
+    print("MYSQL_PORT =", MYSQL_PORT)
+    print("MYSQL_USER =", MYSQL_USER)
+    print("MYSQL_DATABASE =", MYSQL_DATABASE)
+
     MAIL_SERVER = os.getenv("MAIL_SERVER", "localhost")
     MAIL_PORT = int(os.getenv("MAIL_PORT", "587"))
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "true").lower() == "true"
