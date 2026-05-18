@@ -1,0 +1,107 @@
+/* Flatpickr — TMS high-tech dark theme */
+.flatpickr-calendar {
+  background: #0e0e14;
+  border: 1px solid #252532;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 255, 200, 0.08);
+  border-radius: 10px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-weekdays,
+.flatpickr-weekday {
+  background: #0e0e14;
+  color: #f0f0f5;
+  fill: #f0f0f5;
+}
+
+.flatpickr-current-month input.cur-year {
+  color: #00ffc8;
+  font-weight: 600;
+}
+
+.flatpickr-months .flatpickr-prev-month,
+.flatpickr-months .flatpickr-next-month {
+  fill: #a8a8b8;
+}
+.flatpickr-months .flatpickr-prev-month:hover,
+.flatpickr-months .flatpickr-next-month:hover {
+  fill: #00ffc8;
+}
+
+span.flatpickr-weekday {
+  color: #a8a8b8;
+  font-weight: 600;
+}
+
+.flatpickr-day {
+  color: #f0f0f5;
+  border-radius: 6px;
+  line-height: 38px;
+  height: 38px;
+  max-width: 38px;
+}
+
+.flatpickr-day:hover,
+.flatpickr-day:focus {
+  background: rgba(0, 255, 200, 0.12);
+  border-color: transparent;
+}
+
+.flatpickr-day.today {
+  border-color: #00ffc8;
+}
+
+.flatpickr-day.today:hover {
+  background: rgba(0, 255, 200, 0.2);
+  color: #fff;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: #00ffc8;
+  border-color: #00ffc8;
+  color: #030306;
+  font-weight: 600;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+  color: #4a4a5a;
+}
+
+.date-picker-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.date-picker-wrap .date-picker {
+  padding-right: 2.75rem;
+  cursor: pointer;
+}
+
+.date-picker-wrap .date-picker-icon {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #00ffc8;
+  font-size: 1.1rem;
+  line-height: 1;
+  opacity: 0.85;
+}
+
+.filters .date-picker-wrap {
+  width: auto;
+  min-width: 150px;
+}
+.filters .date-picker-wrap .date-picker {
+  margin-bottom: 0;
+  min-width: 150px;
+}

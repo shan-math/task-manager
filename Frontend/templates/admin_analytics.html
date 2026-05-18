@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}Analytics — TMS{% endblock %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+{% endblock %}
+{% block content %}
+<div class="analytics-page">
+    <header class="analytics-hero">
+        <p class="eyebrow">Intelligence</p>
+        <h1>Operations analytics</h1>
+        <p class="muted">Real-time metrics across tasks, teams, and system activity.</p>
+    </header>
+
+    <section class="stats-grid">
+        <article class="stat-card">
+            <span class="stat-val">{{ analytics.total_tasks }}</span>
+            <span class="stat-label">Total tasks</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-val">{{ analytics.completion_rate }}%</span>
+            <span class="stat-label">Completion rate</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-val">{{ analytics.overdue }}</span>
+            <span class="stat-label">Overdue</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-val">{{ analytics.avg_completion_hours }}</span>
+            <span class="stat-label">Avg hours to complete</span>
+        </article>
+    </section>
+
+    <section class="charts-row">
+        <article class="chart-card">
+            <h3>Status distribution</h3>
+            <div class="chart-wrap"><canvas id="statusChart"></canvas></div>
+        </article>
+        <article class="chart-card">
+            <h3>Priority breakdown</h3>
+            <div class="chart-wrap"><canvas id="priorityChart"></canvas></div>
+        </article>
+    </section>
+
+    <section class="charts-row charts-row-full">
+        <article class="chart-card">
+            <h3>Completions — last 30 days</h3>
+            <div class="chart-wrap chart-wrap-tall"><canvas id="completionChart"></canvas></div>
+        </article>
+    </section>
+
+    <section class="analytics-split">
+        <article class="chart-card">
+            <h3>Team workload</h3>
+            <ul class="workload-list">
+                {% set max_open = analytics.workload[0].open_count if analytics.workload else 1 %}
+                {% for w in analytics.workload %}
+                <li>
+                    <div style="flex:1">
+                        <strong>{{ w.username }}</strong>
+                        <div class="workload-bar">
+                            <div class="workload-fill" style="width: {{ (w.open_count / max_open * 100)|int }}%"></div>
+                        </div>
+                    </div>
+                    <span class="pill priority-low">{{ w.open_count }} open</span>
+                </li>
+                {% else %}
+                <li class="muted">No workload data yet.</li>
+                {% endfor %}
+            </ul>
+        </article>
+
+        <article class="panel audit-panel">
+            <h3>Audit log</h3>
+            <div class="audit-scroll">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>Entity</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in audit %}
+                        <tr>
+                            <td>{{ a.created_at }}</td>
+                            <td>{{ a.username or '—' }}</td>
+                            <td>{{ a.action }}</td>
+                            <td>{{ a.entity_type }}{% if a.entity_id %} #{{ a.entity_id }}{% endif %}</td>
+                            <td>{{ a.details or '—' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" class="empty-cell">No audit entries.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='analytics.js') }}"></script>
+<script>
+  initAnalytics({
+    status: {{ analytics.by_status | tojson }},
+    priority: {{ analytics.by_priority | tojson }},
+    completions: {{ analytics.completions_30d | tojson }}
+  });
+</script>
+{% endblock %}

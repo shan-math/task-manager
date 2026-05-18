@@ -1,0 +1,14 @@
+{% if field is defined %}
+<div class="date-picker-wrap">
+    <label for="{{ field.id }}">{{ field.label.text }}</label>
+    {{ field(class='input date-picker', placeholder='dd-mm-yyyy', autocomplete='off') }}
+    <span class="date-picker-icon" aria-hidden="true">▦</span>
+</div>
+{% else %}
+<div class="date-picker-wrap">
+    {% if label %}<label for="{{ id }}">{{ label }}</label>{% endif %}
+    <input type="text" name="{{ name }}" id="{{ id }}" class="input date-picker"
+           placeholder="dd-mm-yyyy" autocomplete="off" value="{{ value or '' }}">
+    <span class="date-picker-icon" aria-hidden="true">▦</span>
+</div>
+{% endif %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{{ board_title }}{% endblock %}
+{% block content %}
+<h1>{{ board_title }}</h1>
+<p class="muted">Drag cards between columns to update status.</p>
+<div class="kanban" data-status-url="{% if session.role == 'admin' %}{{ url_for('admin.kanban_update_status') }}{% elif session.role == 'manager' %}{{ url_for('manager.kanban_update_status') }}{% else %}{{ url_for('user.kanban_update_status') }}{% endif %}">
+    {% for status, items in columns.items() %}
+    <div class="kanban-col" data-status="{{ status }}">
+        <h3>{{ status }} ({{ items|length }})</h3>
+        <div class="kanban-drop">
+            {% for t in items %}
+            <div class="kanban-card" draggable="true" data-id="{{ t.id }}">
+                <strong>{{ t.task }}</strong>
+                {% if t.username %}<div class="muted">{{ t.username }}</div>{% endif %}
+                <div class="pill priority-{{ t.priority|lower }}">{{ t.priority }}</div>
+                {% if t.due_date %}<div class="muted">Due {{ t.due_date | fmt_date }}</div>{% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='kanban.js') }}"></script>
+{% endblock %}

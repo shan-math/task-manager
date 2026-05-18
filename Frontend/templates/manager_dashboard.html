@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Team Dashboard{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div class="page-title-block">
+        <p class="eyebrow">Team lead</p>
+        <h1>Team tasks</h1>
+    </div>
+    <a href="{{ url_for('manager.add_task') }}" class="btn btn-primary">Assign task</a>
+</header>
+{% include 'partials/filters.html' %}
+<div class="panel">
+    <table class="data-table">
+        <thead>
+            <tr><th>Task</th><th>Assignee</th><th>Priority</th><th>Status</th><th>Due</th></tr>
+        </thead>
+        <tbody>
+            {% for t in tasks %}
+            <tr>
+                <td>{{ t.task }}</td>
+                <td>{{ t.username }}</td>
+                <td><span class="pill priority-{{ t.priority|lower }}">{{ t.priority }}</span></td>
+                <td>{{ t.status }}</td>
+                <td>{{ t.due_date | fmt_date }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="empty-cell">No team tasks. Assign users to a team in Admin → Users.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'partials/pagination.html' %}
+{% endblock %}
