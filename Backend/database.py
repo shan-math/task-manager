@@ -36,12 +36,19 @@ def init_db(app):
         password=app.config["MYSQL_PASSWORD"],
     )
     cursor = conn.cursor()
+    cursor.execute(
+    f"CREATE DATABASE IF NOT EXISTS {app.config['MYSQL_DATABASE']}"
+)
+    cursor.execute(
+    f"USE {app.config['MYSQL_DATABASE']}"
+)
     for statement in _split_sql(raw):
         if statement.strip():
             try:
                 cursor.execute(statement)
-            except mysql.connector.Error:
-                pass
+            except mysql.connector.Error as e:
+                print("SQL ERROR:", e)
+                print(statement)
     conn.commit()
 
     conn.close()
@@ -53,6 +60,11 @@ def init_db(app):
         database=app.config["MYSQL_DATABASE"],
     )
     cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SHOW TABLES LIKE 'users'")
+    if cursor.fetchone() is None:
+        raise Exception("users table was not created. Check schema.sql.")
+
     cursor.execute("SELECT COUNT(*) AS c FROM users")
     count = cursor.fetchone()["c"]
     if count == 0:
@@ -75,18 +87,21 @@ def init_db(app):
             cursor.execute(
                 "INSERT IGNORE INTO categories (name) VALUES (%s)", (cat,)
             )
-        except mysql.connector.Error:
-            pass
+        except mysql.connector.Error as e:
+            print("SQL ERROR:", e)
+            print(statement)
     for team in ("Engineering", "Operations"):
         try:
             cursor.execute("INSERT IGNORE INTO teams (name) VALUES (%s)", (team,))
-        except mysql.connector.Error:
-            pass
+        except mysql.connector.Error as e:
+            print("SQL ERROR:", e)
+            print(statement)
     for tag in ("urgent", "backend", "frontend", "review"):
         try:
             cursor.execute("INSERT IGNORE INTO tags (name) VALUES (%s)", (tag,))
-        except mysql.connector.Error:
-            pass
+        except mysql.connector.Error as e:
+            print("SQL ERROR:", e)
+            print(statement)
     conn.commit()
     cursor.close()
     conn.close()
