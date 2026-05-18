@@ -1,0 +1,24 @@
+<form class="filters" method="get">
+    <input type="text" name="q" class="input" placeholder="Search tasks..." value="{{ filters.get('q', '') }}">
+    <select name="status" class="input">
+        <option value="">All statuses</option>
+        {% for s in ['Incomplete', 'In Progress', 'Complete'] %}
+        <option value="{{ s }}" {% if filters.get('status') == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+    </select>
+    <select name="priority" class="input">
+        <option value="">All priorities</option>
+        {% for p in ['High', 'Medium', 'Low'] %}
+        <option value="{{ p }}" {% if filters.get('priority') == p %}selected{% endif %}>{{ p }}</option>
+        {% endfor %}
+    </select>
+    {% with label='Due from', name='due_from', id='filter-due-from', value=filters.get('due_from', '')|fmt_date_input %}
+    {% include 'partials/date_field.html' %}
+    {% endwith %}
+    {% with label='Due to', name='due_to', id='filter-due-to', value=filters.get('due_to', '')|fmt_date_input %}
+    {% include 'partials/date_field.html' %}
+    {% endwith %}
+    <label class="chk"><input type="checkbox" name="overdue" value="1" {% if filters.get('overdue') %}checked{% endif %}> Overdue only</label>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    <a href="?" class="btn btn-ghost">Clear</a>
+</form>

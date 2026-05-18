@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<h1>Categories</h1>
+<form method="POST" class="form inline">
+    {{ form.hidden_tag() }}
+    {{ form.name(class='input', placeholder='New category') }}
+    <button class="btn">Add</button>
+</form>
+<ul class="simple-list">
+    {% for c in categories %}<li>{{ c.name }}</li>{% endfor %}
+</ul>
+{% endblock %}

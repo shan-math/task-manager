@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Add Task{% endblock %}
+{% block content %}
+<div class="card">
+    <p class="eyebrow">{% if manager %}Team{% else %}Admin{% endif %}</p>
+    <h2>{% if manager %}Assign team task{% else %}Create task{% endif %}</h2>
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <label>Title</label>{{ form.task(class='input') }}
+        <label>Description</label>{{ form.description(class='input', rows=4) }}
+        <label>Priority</label>{{ form.priority(class='input') }}
+        {% if not manager %}<label>Status</label>{{ form.status(class='input') }}{% endif %}
+        <label>Assign to</label>{{ form.user_id(class='input') }}
+        <label>Category</label>{{ form.category_id(class='input') }}
+        {% set field = form.due_date %}{% include 'partials/date_field.html' %}
+        <label>Tags</label>{{ form.tags(class='input', multiple=true, size=4) }}
+        <div class="actions" style="margin-top:1rem">
+            <button type="submit" class="btn btn-primary">Save task</button>
+            <a href="{% if manager %}{{ url_for('manager.dashboard') }}{% else %}{{ url_for('admin.dashboard') }}{% endif %}" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

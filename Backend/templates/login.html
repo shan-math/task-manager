@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Login — TMS{% endblock %}
+{% block content %}
+<div class="card narrow">
+    <p class="eyebrow">Access</p>
+    <h2>Sign in</h2>
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <label>Username</label>
+        {{ form.username(class='input', placeholder='Enter username') }}
+        <label>Password</label>
+        {{ form.password(class='input', placeholder='Enter password') }}
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:0.5rem">Login</button>
+    </form>
+    <p class="muted" style="margin-top:1.5rem;text-align:center">
+        <a href="{{ url_for('auth.signup') }}" style="color:var(--accent)">Create an account</a>
+    </p>
+</div>
+{% endblock %}

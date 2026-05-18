@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<header class="page-header">
+    <div class="page-title-block">
+        <p class="eyebrow">Control panel</p>
+        <h1>Task operations</h1>
+    </div>
+    <div class="actions">
+        <a href="{{ url_for('admin.add_task') }}" class="btn btn-primary">+ New task</a>
+        <a href="{{ url_for('admin.analytics') }}" class="btn btn-ghost">Analytics</a>
+        <a href="{{ url_for('admin.export_csv') }}" class="btn btn-ghost">CSV</a>
+        <a href="{{ url_for('admin.export_pdf') }}" class="btn btn-ghost">PDF</a>
+    </div>
+</header>
+
+{% include 'partials/filters.html' %}
+
+<div class="panel">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Assignee</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Due</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tasks %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('admin.task_detail', task_id=t.id) }}" class="task-link">{{ t.task }}</a>
+                    {% if t.tags %}
+                    <div class="tags">{% for tag in t.tags %}<span class="tag">{{ tag.name }}</span>{% endfor %}</div>
+                    {% endif %}
+                </td>
+                <td>{{ t.username }}</td>
+                <td><span class="pill priority-{{ t.priority|lower }}">{{ t.priority }}</span></td>
+                <td><span class="status-dot status-{{ t.status|replace(' ', '-')|lower }}"></span>{{ t.status }}</td>
+                <td>{{ t.due_date | fmt_date }}</td>
+                <td>{{ t.category_name or '—' }}</td>
+                <td class="row-actions">
+                    <a href="{{ url_for('admin.edit_task', task_id=t.id) }}" class="btn btn-ghost btn-small">Edit</a>
+                    <form method="POST" action="{{ url_for('admin.delete_task', task_id=t.id) }}" class="inline-form" onsubmit="return confirm('Delete this task?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="empty-cell">No tasks match your filters.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'partials/pagination.html' %}
+{% endblock %}

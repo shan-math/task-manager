@@ -4,14 +4,16 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+
 BACKEND_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BACKEND_DIR.parent
-FRONTEND_DIR = PROJECT_ROOT / "Frontend"
+
+# For Railway deployment, templates/static are inside Backend/
+FRONTEND_DIR = BACKEND_DIR
 
 # Load .env from Backend/ or project root
 load_dotenv(BACKEND_DIR / ".env")
 load_dotenv(PROJECT_ROOT / ".env")
-
 
 class Config:
     SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "dev-secret-change-in-production")

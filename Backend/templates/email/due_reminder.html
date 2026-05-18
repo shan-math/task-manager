@@ -1,0 +1,7 @@
+<p>Hi {{ username }},</p>
+<p>Reminder: the following tasks are due tomorrow:</p>
+<ul>
+{% for t in tasks %}
+<li>{{ t.task }} (due {{ t.due_date }}) — {{ t.status }}</li>
+{% endfor %}
+</ul>

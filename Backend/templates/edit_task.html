@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Edit Task{% endblock %}
+{% block content %}
+<div class="card">
+    <p class="eyebrow">Edit</p>
+    <h2>Task #{{ task_id }}</h2>
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <label>Title</label>{{ form.task(class='input') }}
+        <label>Description</label>{{ form.description(class='input', rows=4) }}
+        <label>Priority</label>{{ form.priority(class='input') }}
+        <label>Status</label>{{ form.status(class='input') }}
+        <label>Assign to</label>{{ form.user_id(class='input') }}
+        <label>Category</label>{{ form.category_id(class='input') }}
+        {% set field = form.due_date %}{% include 'partials/date_field.html' %}
+        <label>Tags</label>{{ form.tags(class='input', multiple=true, size=4) }}
+        <div class="actions" style="margin-top:1rem">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

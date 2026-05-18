@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Task — {{ task.task }}{% endblock %}
+{% block content %}
+<a href="{{ back_url }}" class="back">&larr; Back</a>
+<div class="card">
+    <h1>{{ task.task }}</h1>
+    <p class="muted">{{ task.description or 'No description.' }}</p>
+    <p><strong>Status:</strong> {{ task.status }} | <strong>Priority:</strong> {{ task.priority }} | <strong>Due:</strong> {{ task.due_date | fmt_date }}</p>
+    {% if tags %}<div class="tags">{% for tag in tags %}<span class="tag">{{ tag.name }}</span>{% endfor %}</div>{% endif %}
+</div>
+<h2>Comments</h2>
+{% for c in comments %}
+<div class="comment"><strong>{{ c.username }}</strong> <span class="muted">{{ c.created_at }}</span><p>{{ c.body }}</p></div>
+{% else %}<p class="muted">No comments yet.</p>{% endfor %}
+<form method="POST" class="form">
+    {{ comment_form.hidden_tag() }}
+    {{ comment_form.body(class='input', rows=3, placeholder='Add a comment...') }}
+    <button class="btn">Post comment</button>
+</form>
+<h2>Attachments</h2>
+<ul>{% for a in attachments %}
+<li><a href="{{ url_for('user.download_attachment', filename=a.stored_path) if upload_endpoint == 'user.upload_attachment' else url_for('admin.download_attachment', filename=a.stored_path) }}">{{ a.filename }}</a></li>
+{% else %}<li class="muted">No files.</li>{% endfor %}</ul>
+<form method="POST" action="{{ url_for(upload_endpoint, task_id=task_id) }}" enctype="multipart/form-data" class="form inline">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="file" name="file" required>
+    <button class="btn">Upload</button>
+</form>
+{% endblock %}

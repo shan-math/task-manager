@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up — TMS{% endblock %}
+{% block content %}
+<div class="card narrow">
+    <p class="eyebrow">Register</p>
+    <h2>Create account</h2>
+    <p class="muted">New accounts are registered as standard users.</p>
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        <label>Username</label>
+        {{ form.username(class='input') }}
+        <label>Email</label>
+        {{ form.email(class='input') }}
+        <label>Password</label>
+        {{ form.password(class='input') }}
+        <label>Confirm password</label>
+        {{ form.password2(class='input') }}
+        <button type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
+    </form>
+    <p class="muted" style="margin-top:1.25rem;text-align:center">
+        <a href="{{ url_for('auth.login') }}" style="color:var(--accent)">Already have an account?</a>
+    </p>
+</div>
+{% endblock %}
