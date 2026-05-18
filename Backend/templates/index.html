@@ -9,6 +9,23 @@
         <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
         <a href="{{ url_for('auth.signup') }}" class="btn btn-ghost">Get started</a>
     </div>
+
+    <aside class="demo-admin-box" aria-label="Demo admin credentials">
+        <p class="demo-admin-title">Login as admin</p>
+        <p class="demo-admin-hint">Use these credentials on the login page:</p>
+        <dl class="demo-admin-creds">
+            <div>
+                <dt>Username</dt>
+                <dd><code>admin</code></dd>
+            </div>
+            <div>
+                <dt>Password</dt>
+                <dd><code>Admin123!</code></dd>
+            </div>
+        </dl>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary demo-admin-btn">Go to login</a>
+    </aside>
+
     <ul class="feature-list">
         <li>Role-based control for admins, managers, and users</li>
         <li>Due dates, alerts, and real-time analytics</li>
