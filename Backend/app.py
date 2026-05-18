@@ -23,7 +23,10 @@ def create_app(config_class=Config):
         static_url_path="/static",
     )
     app.config.from_object(config_class)
+    from database import init_db
 
+    with app.app_context():
+         init_db(app)
     upload_path = os.path.join(BACKEND_DIR, app.config["UPLOAD_FOLDER"])
     app.config["UPLOAD_FOLDER_ABS"] = upload_path
     os.makedirs(upload_path, exist_ok=True)
